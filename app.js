@@ -143,5 +143,45 @@ function draw() {
     ctx.fillText(score, 2 * box, 1.6 * box);
 }
 
+function restartGame() {
+    // Reset the snake
+    snake = [];
+    snake[0] = {
+        x: 9 * box,
+        y: 10 * box
+    };
+
+    // Reset the score
+    score = 0;
+
+    // Reset the direction
+    d = undefined;
+
+    // Reset the food
+    food = {
+        x: Math.floor(Math.random() * 17 + 1) * box,
+        y: Math.floor(Math.random() * 15 + 3) * box
+    };
+
+    // Clear the game over message
+    ctx.clearRect(0, 0, cvs.width, cvs.height);
+
+    // Restart the game loop
+    game = setInterval(draw, 100);
+}
+
+if (snakeX < box || snakeX > 17 * box || snakeY < 3 * box || snakeY > 17 * box || collision(newHead, snake)) {
+    clearInterval(game);
+    dead.play();
+    showGameOverMessage();
+    setTimeout(restartGame, 2000); // Restart the game after 2 seconds
+}
+
+function showGameOverMessage() {
+    ctx.fillStyle = "red";
+    ctx.font = "50px Changa one";
+    ctx.fillText("Game Over", 5 * box, 10 * box);
+}
+
 //call draw function every 100ms
 let game = setInterval(draw, 100);
